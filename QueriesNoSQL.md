@@ -8,15 +8,6 @@ A continuación se presentan 5 enunciados de consultas basados en las coleccione
 
 **Consulta MongoDB:**
 ```javascript
-
-```
-
-## 2. Patrones de Transacciones por Cliente
-
-**Enunciado:** El equipo de análisis de comportamiento necesita identificar los patrones de transacciones de cada cliente, mostrando la cantidad y el monto total de transacciones por tipo (depósito, retiro, transferencia) para cada cliente.
-
-**Consulta MongoDB:**
-```javascript
 db.clientes.aggregate([
   {$unwind: "$cuentas"},
   {$group: 
@@ -30,6 +21,14 @@ db.clientes.aggregate([
 	},
   {$project: {_id: 0, tipo_cuenta: "$_id", saldoTotal: 1, saldoMinimo: 1, saldoMaximo: 1, promedio: 1}}
 ])
+```
+
+## 2. Patrones de Transacciones por Cliente
+
+**Enunciado:** El equipo de análisis de comportamiento necesita identificar los patrones de transacciones de cada cliente, mostrando la cantidad y el monto total de transacciones por tipo (depósito, retiro, transferencia) para cada cliente.
+
+**Consulta MongoDB:**
+```javascript
 ```
 
 ## 3. Clientes con Múltiples Tarjetas de Crédito
