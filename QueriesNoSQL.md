@@ -11,13 +11,13 @@ A continuación se presentan 5 enunciados de consultas basados en las coleccione
 db.clientes.aggregate([
   {$unwind: "$cuentas"},
   {$group: 
-			{
-				_id:"$cuentas.tipo_cuenta", 
-				saldoTotal:{$sum: "$cuentas.saldo"}, 
-				saldoMinimo:{$min: "$cuentas.saldo"},
-				saldoMaximo:{$max: "$cuentas.saldo"},
-			  promedio:{$avg: "$cuentas.saldo"}				
-			}
+	 {
+ 	   _id:"$cuentas.tipo_cuenta", 
+	   saldoTotal:{$sum: "$cuentas.saldo"}, 
+	   saldoMinimo:{$min: "$cuentas.saldo"},
+	   saldoMaximo:{$max: "$cuentas.saldo"},
+	   promedio:{$avg: "$cuentas.saldo"}				
+	 }
 	},
   {$project: {_id: 0, tipo_cuenta: "$_id", saldoTotal: 1, saldoMinimo: 1, saldoMaximo: 1, promedio: 1}}
 ])
