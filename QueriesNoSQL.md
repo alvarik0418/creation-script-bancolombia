@@ -57,6 +57,19 @@ db.clientes.aggregate([
 
 **Consulta MongoDB:**
 ```javascript
+db.clientes.aggregate([
+{$unwind: "$cuentas"},
+{$unwind: "$cuentas.tarjetas"},
+{$group: 
+  {
+    _id:"$_id",
+    cliente: {$first: {documento: "$cedula", nombre: "$nombre", correo:"$correo", direccion:"$direccion"}},
+    cantidadTarjetas:{$count: {}},
+    detalleTarjetas: {$push: "$cuentas.tarjetas"}
+  }
+},
+{$project: {_id: 0, cliente: 1, cantidadTarjetas: 1, detalleTarjetas: 1}}
+])
 ```
 
 ## 4. Análisis de Medios de Pago más Utilizados
