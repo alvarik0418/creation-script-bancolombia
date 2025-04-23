@@ -6,7 +6,11 @@
 
 **Consulta SQL:**
 ```sql
-
+select c.cedula, c.nombre, count(ct.*) cantidadCuentas, sum(ct.saldo) SaldoTotalAcumulado
+from cliente c inner join cuenta ct on ct.id_cliente = c.id_cliente
+group by c.cedula, c.nombre
+having count(ct.*) > 1
+order by c.nombre asc;
 ```
 
 ## Enunciado 2: Comparativa entre depósitos y retiros por cliente
@@ -15,7 +19,12 @@
 
 **Consulta SQL:**
 ```sql
-
+select c.cedula, c.nombre, tx.tipo_transaccion, sum(tx.monto) MontoTotal
+from cliente c inner join cuenta ct on ct.id_cliente = c.id_cliente
+			   inner join Transaccion tx on tx.num_cuenta = ct.num_cuenta
+where tx.tipo_transaccion in ('deposito','retiro')
+group by c.cedula, c.nombre, tx.tipo_transaccion
+order by c.nombre asc;
 ```
 
 ## Enunciado 3: Cuentas sin tarjetas asociadas
