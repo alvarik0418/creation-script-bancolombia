@@ -78,6 +78,20 @@ db.clientes.aggregate([
 
 **Consulta MongoDB:**
 ```javascript
+db.transacciones.aggregate([
+{$match:{tipo_transaccion: "deposito",$expr:{$eq: [{$year: {$toDate:"$fecha"}}, 2023]}}},
+{$group: 
+  {
+    _id:{ mes: {$month: {$toDate:"$fecha"}}, medio_pago:"$detalles_deposito.medio_pago"},
+    medio_pago: {$first: "$detalles_deposito.medio_pago"},	
+    mes: {$first:{$month: {$toDate:"$fecha"}}},
+    cantidadTransacciones:{$count: {}},
+    montoTotal:{$sum: "$monto"}
+ }
+},
+{$project: {_id: 0, mes: 1,medio_pago:1, cantidadTransacciones: 1, montoTotal: 1}},
+{ $sort: { cantidadTransacciones: -1 }}
+])
 ```
 
 ## 5. Detección de Cuentas con Transacciones Sospechosas
