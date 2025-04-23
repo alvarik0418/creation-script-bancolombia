@@ -59,5 +59,17 @@ order by ct.tipo_cuenta asc;
 
 **Consulta SQL:**
 ```sql
-
+select distinct c.cedula, c.nombre
+from cliente c inner join cuenta ct on ct.id_cliente = c.id_cliente
+			   inner join Transaccion tx on tx.num_cuenta = ct.num_cuenta
+			   inner join Transferencia tr on tr.id_transaccion = tx.id_transaccion
+where tx.tipo_transaccion in ('transferencia')
+and c.cedula not in (
+	select distinct c.cedula
+	from cliente c inner join cuenta ct on ct.id_cliente = c.id_cliente
+				   inner join Transaccion tx on tx.num_cuenta = ct.num_cuenta
+				   inner join Retiro rt on rt.id_transaccion = tx.id_transaccion and 							   rt.canal in ('cajero')
+	where tx.tipo_transaccion in ('retiro')
+)
+order by c.nombre asc;
 ```
