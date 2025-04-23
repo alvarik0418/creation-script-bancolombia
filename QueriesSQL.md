@@ -46,7 +46,11 @@ order by c.nombre asc;
 
 **Consulta SQL:**
 ```sql
-
+select ct.tipo_cuenta, (sum(ct.saldo)/count(1)) SaldoPromedioAcumulado
+from cuenta ct 
+where ct.num_cuenta in (select tx.num_cuenta from Transaccion tx where fecha::DATE >= (CURRENT_DATE-30)::DATE)
+group by ct.tipo_cuenta
+order by ct.tipo_cuenta asc;
 ```
 
 ## Enunciado 5: Clientes con transferencias pero sin retiros en cajeros
