@@ -35,7 +35,7 @@ order by c.nombre asc;
 ```sql
 select c.cedula, c.nombre, ct.num_cuenta
 from cliente c inner join cuenta ct on ct.id_cliente = c.id_cliente
-			   left join tarjeta t on t.num_cuenta = ct.num_cuenta
+	       left join tarjeta t on t.num_cuenta = ct.num_cuenta
 where t.num_cuenta is null
 order by c.nombre asc;
 ```
