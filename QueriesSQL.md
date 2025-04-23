@@ -33,7 +33,11 @@ order by c.nombre asc;
 
 **Consulta SQL:**
 ```sql
-
+select c.cedula, c.nombre, ct.num_cuenta
+from cliente c inner join cuenta ct on ct.id_cliente = c.id_cliente
+			   left join tarjeta t on t.num_cuenta = ct.num_cuenta
+where t.num_cuenta is null
+order by c.nombre asc;
 ```
 
 ## Enunciado 4: Análisis de saldos promedio por tipo de cuenta y comportamiento transaccional
