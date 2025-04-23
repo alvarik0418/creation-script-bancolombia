@@ -111,7 +111,7 @@ db.transacciones.aggregate([
     montoTotal:{$sum: "$monto"}
   }
 },
-{$match:{cantidadTransacciones:{$gte:1},montoTotal:{$gte:20000}}},
+{$match:{cantidadTransacciones:{$gte:3},montoTotal:{$gte:1000000}}},
 {$project: {_id: 0, cuenta:1, dia:1, cantidadTransacciones: 1, montoTotal: 1}}
 ])
 ```
