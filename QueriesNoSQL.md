@@ -9,17 +9,17 @@ A continuación se presentan 5 enunciados de consultas basados en las coleccione
 **Consulta MongoDB:**
 ```javascript
 db.clientes.aggregate([
-  {$unwind: "$cuentas"},
-  {$group: 
-	 {
- 	   _id:"$cuentas.tipo_cuenta", 
-	   saldoTotal:{$sum: "$cuentas.saldo"}, 
-	   saldoMinimo:{$min: "$cuentas.saldo"},
-	   saldoMaximo:{$max: "$cuentas.saldo"},
-	   promedio:{$avg: "$cuentas.saldo"}				
-	 }
-	},
-  {$project: {_id: 0, tipo_cuenta: "$_id", saldoTotal: 1, saldoMinimo: 1, saldoMaximo: 1, promedio: 1}}
+{$unwind: "$cuentas"},
+{$group: 
+ {
+   _id:"$cuentas.tipo_cuenta", 
+   saldoTotal:{$sum: "$cuentas.saldo"}, 
+   saldoMinimo:{$min: "$cuentas.saldo"},
+   saldoMaximo:{$max: "$cuentas.saldo"},
+   promedio:{$avg: "$cuentas.saldo"}				
+ }
+},
+{$project: {_id: 0, tipo_cuenta: "$_id", saldoTotal: 1, saldoMinimo: 1, saldoMaximo: 1, promedio: 1}}
 ])
 ```
 
@@ -100,4 +100,18 @@ db.transacciones.aggregate([
 
 **Consulta MongoDB:**
 ```javascript
+db.transacciones.aggregate([
+{$match:{tipo_transaccion: "retiro"}},
+{$group: 
+  {
+    _id:{cuenta: "$num_cuenta", dia: {$dateToString: { date: {$toDate:"$fecha"}, format: "%Y-%m-%d" }}},
+    cuenta: {$first: "$num_cuenta"},
+    dia: {$first: {$dateToString: { date: {$toDate:"$fecha"}, format: "%Y-%m-%d" }}},
+    cantidadTransacciones:{$count: {}},
+    montoTotal:{$sum: "$monto"}
+  }
+},
+{$match:{cantidadTransacciones:{$gte:1},montoTotal:{$gte:20000}}},
+{$project: {_id: 0, cuenta:1, dia:1, cantidadTransacciones: 1, montoTotal: 1}}
+])
 ```
